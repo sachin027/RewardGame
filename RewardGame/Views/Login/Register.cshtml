@@ -1,0 +1,99 @@
+﻿@model RewardGame_Model.ViewModel.UserModel
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Login 04</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="~/Content/Theme/Login/css/style.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+</head>
+<body>
+    @if (TempData["success"] != null)
+    {
+<script>
+        toastr.success('@TempData["success"]')
+</script>}
+    @if (TempData["error"] != null)
+    {
+<script>
+        toastr.error('@TempData["error"]')
+</script>
+    }    @if (TempData["email"] != null)
+    {
+<script>
+        toastr.error('@TempData["email"]')
+</script>
+    }
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section">Reward Game Portal</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="wrap d-md-flex">
+                        <div class="img" style="background-image: url(/Content/Theme/Login/images/dice.jpg);">
+                        </div>
+                        <div class="login-wrap p-4 p-md-5">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4">Sign Up</h3>
+                                </div>
+                            </div>
+                            <form method="post" class="signin-form">
+                                <div class="form-group mb-3">
+                                    <label class="label" for="name">Username</label>
+                                    @*<input type="text" name="Username" class="form-control" placeholder="Username">*@
+                                    @Html.TextBoxFor(x => x.Username, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Username, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="label" for="email">Email</label>
+                                    @*<input type="text" name="EmailId" class="form-control" placeholder="abc@xyz.com">*@
+                                    @Html.TextBoxFor(x => x.EmailId, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.EmailId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="label" for="password">Password</label>
+                                    @*<input type="password" name="Password" class="form-control" placeholder="Password">*@
+                                    @Html.PasswordFor(x => x.Password, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="label" for="password">Confirm Password</label>
+                                    @*<input type="password" name="ConfirmPassword" class="form-control" placeholder="Password">*@
+                                    @Html.PasswordFor(x => x.ConfirmPassword, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.ConfirmPassword, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign Up</button>
+                                </div>
+                            </form>
+
+                            <p class="text-center">Already member? @Html.ActionLink("Sign in", "Login", "Login")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="~/Content/Theme/Login/js/jquery.min.js"></script>
+    <script src="~/Content/Theme/Login/js/popper.js"></script>
+    <script src="~/Content/Theme/Login/js/bootstrap.min.js"></script>
+    <script src="~/Content/Theme/Login/js/main.js"></script>
+
+</body>
+</html>
+

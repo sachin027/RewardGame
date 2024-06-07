@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SachinKanzariya_452Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TransactionsHistory">
+          <Key>
+            <PropertyRef Name="Transaction_id" />
+          </Key>
+          <Property Name="Transaction_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userid" Type="int" />
+          <Property Name="DebitAmount" Type="int" />
+          <Property Name="CreditAmount" Type="int" />
+          <Property Name="TotalAmount" Type="int" />
+          <Property Name="ChanceLeft" Type="int" />
+          <Property Name="TransactionDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="100" />
+          <Property Name="EmailId" Type="varchar" MaxLength="80" />
+          <Property Name="Password" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Wallet">
+          <Key>
+            <PropertyRef Name="WalletID" />
+          </Key>
+          <Property Name="WalletID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="TotalBalance" Type="int" />
+          <Property Name="RemainingChance" Type="int" />
+          <Property Name="transactiondate" Type="datetime" />
+          <Property Name="CreditedAmount" Type="int" />
+          <Property Name="DebitedAmount" Type="int" />
+        </EntityType>
+        <Association Name="FK__Transacti__useri__4222D4EF">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="TransactionsHistory" Type="Self.TransactionsHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="TransactionsHistory">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Wallet__UserID__398D8EEE">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="Wallet" Type="Self.Wallet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Wallet">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SachinKanzariya_452ModelStoreContainer">
+          <EntitySet Name="TransactionsHistory" EntityType="Self.TransactionsHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Wallet" EntityType="Self.Wallet" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Transacti__useri__4222D4EF" Association="Self.FK__Transacti__useri__4222D4EF">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="TransactionsHistory" EntitySet="TransactionsHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Wallet__UserID__398D8EEE" Association="Self.FK__Wallet__UserID__398D8EEE">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="Wallet" EntitySet="Wallet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SachinKanzariya_452Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmailId" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Wallet" Relationship="Self.FK__Wallet__UserID__398D8EEE" FromRole="UserTable" ToRole="Wallet" />
+          <NavigationProperty Name="TransactionsHistory" Relationship="SachinKanzariya_452Model.FK__Transacti__useri__4222D4EF" FromRole="UserTable" ToRole="TransactionsHistory" />
+        </EntityType>
+        <EntityType Name="Wallet">
+          <Key>
+            <PropertyRef Name="WalletID" />
+          </Key>
+          <Property Name="WalletID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="TotalBalance" Type="Int32" />
+          <Property Name="RemainingChance" Type="Byte" />
+          <Property Name="transactiondate" Type="DateTime" Precision="3" />
+          <Property Name="CreditedAmount" Type="Int32" />
+          <Property Name="DebitedAmount" Type="Int32" />
+          <NavigationProperty Name="UserTable" Relationship="Self.FK__Wallet__UserID__398D8EEE" FromRole="Wallet" ToRole="UserTable" />
+        </EntityType>
+        <Association Name="FK__Wallet__UserID__398D8EEE">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="Wallet" Type="Self.Wallet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Wallet">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SachinKanzariya_452Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserTable" EntityType="Self.UserTable" />
+          <EntitySet Name="Wallet" EntityType="Self.Wallet" />
+          <AssociationSet Name="FK__Wallet__UserID__398D8EEE" Association="Self.FK__Wallet__UserID__398D8EEE">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="Wallet" EntitySet="Wallet" />
+          </AssociationSet>
+          <EntitySet Name="TransactionsHistory" EntityType="SachinKanzariya_452Model.TransactionsHistory" />
+          <AssociationSet Name="FK__Transacti__useri__4222D4EF" Association="SachinKanzariya_452Model.FK__Transacti__useri__4222D4EF">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="TransactionsHistory" EntitySet="TransactionsHistory" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TransactionsHistory">
+          <Key>
+            <PropertyRef Name="Transaction_id" />
+          </Key>
+          <Property Name="Transaction_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userid" Type="Int32" />
+          <Property Name="DebitAmount" Type="Int32" />
+          <Property Name="CreditAmount" Type="Int32" />
+          <Property Name="TotalAmount" Type="Int32" />
+          <Property Name="ChanceLeft" Type="Int32" />
+          <Property Name="TransactionDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserTable" Relationship="SachinKanzariya_452Model.FK__Transacti__useri__4222D4EF" FromRole="TransactionsHistory" ToRole="UserTable" />
+        </EntityType>
+        <Association Name="FK__Transacti__useri__4222D4EF">
+          <End Type="SachinKanzariya_452Model.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="SachinKanzariya_452Model.TransactionsHistory" Role="TransactionsHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="TransactionsHistory">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SachinKanzariya_452ModelStoreContainer" CdmEntityContainer="SachinKanzariya_452Entities">
+          <EntitySetMapping Name="UserTable">
+            <EntityTypeMapping TypeName="SachinKanzariya_452Model.UserTable">
+              <MappingFragment StoreEntitySet="UserTable">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Wallet">
+            <EntityTypeMapping TypeName="SachinKanzariya_452Model.Wallet">
+              <MappingFragment StoreEntitySet="Wallet">
+                <ScalarProperty Name="WalletID" ColumnName="WalletID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TotalBalance" ColumnName="TotalBalance" />
+                <ScalarProperty Name="RemainingChance" ColumnName="RemainingChance" />
+                <ScalarProperty Name="transactiondate" ColumnName="transactiondate" />
+                <ScalarProperty Name="CreditedAmount" ColumnName="CreditedAmount" />
+                <ScalarProperty Name="DebitedAmount" ColumnName="DebitedAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionsHistory">
+            <EntityTypeMapping TypeName="SachinKanzariya_452Model.TransactionsHistory">
+              <MappingFragment StoreEntitySet="TransactionsHistory">
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="ChanceLeft" ColumnName="ChanceLeft" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="CreditAmount" ColumnName="CreditAmount" />
+                <ScalarProperty Name="DebitAmount" ColumnName="DebitAmount" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="Transaction_id" ColumnName="Transaction_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

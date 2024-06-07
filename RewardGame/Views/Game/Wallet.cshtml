@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Wallet";
+    Layout = "~/Views/Shared/_LayoutLoginPage.cshtml";
+}
+
+
+@model List<RewardGame_Model.DBContext.TransactionsHistory>
+@*@model List<RewardGame_Model.ViewModel.WalletModel>*@
+
+<h2 class="text-center">Wallet History</h2>
+
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total Balance
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.balance</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Chance Left
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-danger">@ViewBag.chance</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<table class="table table-bordered table-hover">
+    <thead class="bg-success text-white">
+        <th>
+            Total Balance
+        </th>
+        <th>
+            Transaction
+        </th>
+        <th>
+            Transaction Date
+        </th>
+    </thead>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+
+            if (item.DebitAmount == 20)
+            {
+                <tr>
+                    <td>@(item.TotalAmount - item.CreditAmount)</td>
+                    <td class="text-danger">-@item.DebitAmount</td>
+                    <td>@item.TransactionDate</td>
+                </tr>
+            }
+<tr>
+    <td>@item.TotalAmount</td>
+    <td class="text-success">+@item.CreditAmount</td>
+    <td>@item.TransactionDate</td>
+</tr>
+        }
+    }
+
+</table>
