@@ -150,6 +150,7 @@
     <Content Include="Content\Theme\Login\css\bootstrap\_media.css" />
     <Content Include="Content\Theme\Login\css\style.css" />
     <Content Include="Content\Theme\Login\images\bg-1.jpg" />
+    <Content Include="Content\Theme\Login\images\download.jfif" />
     <Content Include="Content\Theme\Login\js\bootstrap.min.js" />
     <Content Include="Content\Theme\Login\js\jquery.min.js" />
     <Content Include="Content\Theme\Login\js\main.js" />
@@ -2118,6 +2119,7 @@
     <Content Include="Content\Theme\UserDashBoard\vendor\jquery\jquery.slim.min.map" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="Content\Theme\Login\images\spinner.avif" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
