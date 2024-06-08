@@ -16,12 +16,12 @@
                         <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.balance</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        <i class="fas fa-wallet fa-2x text-warning"></i>
                     </div>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
@@ -33,12 +33,12 @@
                         <div class="h5 mb-0 font-weight-bold text-danger ">@ViewBag.chance</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        <i class="fas fa-dice fa-2x text-primary"></i>
                     </div>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
@@ -50,7 +50,24 @@
                         <div class="h5 mb-0 font-weight-bold text-success-800 text-success">+ @ViewBag.profit</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        <i class="fas fa-coins fa-2x text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total Earning
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-success-800 text-warning"> @ViewBag.totalWin</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-info"></i>
                     </div>
                 </div>
             </div>
@@ -59,3 +76,60 @@
 
 </div>
 
+
+<!-- index.html -->
+
+<div class="dashboardjackpot">
+    <div class="card w-50" style=" margin: 20px auto; width: 60%; background-color: #f0f0f0; border: 5px solid #ffd700; padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.1);">
+        <div>
+            <h1 class="text-center">Spin And win</h1>
+        </div>
+        <div class=" d-flex" style=" height: 300px; border-radius: 15px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center;">
+
+            <div class="card reel card-1" style="background: #ffd700; color: #333; padding: 20px; border-radius: 10px; width: 30%; font-size: 1.5em;">
+                <h2 id="card-1" class="my-auto text-danger cardText" style="padding-left:50px ; font-size:50px"></h2>
+            </div>
+            <div class="card reel card-2" style="background: #ffd700; color: #333; padding: 20px; border-radius: 10px; width: 30%; font-size: 1.5em;">
+                <h2 id="card-2" class="my-auto text-danger cardText" style="padding-left:50px ; font-size:50px"></h2>
+            </div>
+            <div class="card reel card-3" style="background: #ffd700; color: #333; padding: 20px; border-radius: 10px; width: 30%; font-size: 1.5em;">
+                <h2 id="card-3" class="my-auto text-danger cardText" style="padding-left:50px ; font-size:50px"></h2>
+            </div>
+        </div>
+        <div class="text-center">
+            <a href="GamePage" class="btn btn-success ">Play Game</a>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .dashboardjackpot{
+        margin-top:120px
+    }
+    .reel {
+        width: 30%;
+        height: 100%;
+        border: 2px solid #ffd700;
+        border-radius: 10px;
+        margin: 0 1%;
+        background: rgba(255, 215, 0, 0.3);
+        color: red;
+        font-size: 2em;
+        line-height: 300px;
+    }
+</style>
+
+<script>
+    // script.js
+    const cards = document.querySelectorAll('.card h2');
+
+    function generateNumbers() {
+        for (let i = 0; i < cards.length; i++) {
+            const randomNumber = Math.floor(Math.random() * 100) + 1;
+            cards[i].textContent = randomNumber;
+        }
+    }
+
+    setInterval(generateNumbers, 100); // generate numbers every 1 second
+</script>

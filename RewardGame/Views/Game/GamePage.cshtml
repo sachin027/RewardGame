@@ -16,13 +16,15 @@
     </script>
 }
 
-<h2 class="text-center">Generate and Earn</h2>
+<h2 class="text-center">Play and Earn</h2>
 
 
-<div class="card" style="max-width: 350px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);margin:auto;margin-top:120px">
+
+
+<div class="card" style="max-width: 350px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);margin:auto;margin-top:70px">
     <div class="card-body" style=" padding: 20px;">
         <img src="~/Content/Theme/UserDashBoard/img/OIP.jpg" alt="Game Image" class="img-fluid rounded-circle mb-3">
-        <h5 class="card-title">Random Number</h5>
+        <h5 class="card-title">Lucky Number</h5>
         <input type="text" id="randomNumber" value="" readonly class="form-control" />
         <hr />
         <button id="generateNumber" class="btn btn-success" type="submit">Play</button>
@@ -32,49 +34,100 @@
         <span id="error" class="text-danger"></span>
     </div>
 </div>
+
+<div class="warning-card">
+    <div class="card-content">
+        <h3 class="card-title">Game Rules</h3>
+        <ul>
+            <li>The user's daily earnings are capped at a maximum of 500 rupees.</li>
+            <li>The user is granted only three opportunities to play for free.</li>
+            <li>Once the complimentary attempts have been exhausted, users will be required to pay 20 rupees for each subsequent trial.</li>
+            <li>The wallet is updated with each generated number.</li>
+            <li>The money is taken out but the generated number is not added to the wallet if the user plays for 20 rupees and the balance reaches 500 rupees.</li>
+        </ul>
+        <p class="warning-message">Warning: Please follow the rules to avoid any inconvenience.</p>
+    </div>
+</div>
+<style>
+    .warning-card {
+        background-color: rgba(255, 255, 0, 0.3); /* Yellow with transparency */
+        border: 2px solid #ffc107; /* Yellow border */
+        border-radius: 10px; /* Rounded border */
+        padding: 20px;
+        max-width: 600px; /* Adjust width as needed */
+        margin: 20px auto; /* Center align */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    }
+
+    .card-content {
+        color: #333; /* Text color */
+    }
+
+    .card-title {
+        color: #ffc107; /* Yellow title color */
+    }
+
+    .warning-message {
+        color: #dc3545; /* Red warning message color */
+        font-weight: bold;
+    }
+</style>
+
+
 <script>
     $(document).ready(function () {
-        $("#generateNumber").on("click", () => {
-            var random = Math.floor(Math.random() * 100) ;
-            var randomNumber = document.getElementById("randomNumber");
+        $("#generateNumber").on("click", function () {
+            var randomNumber = $("#randomNumber");
 
-            if (Number(@Session["chance"]) > 0) {
-                randomNumber.value = random;
+            // Function to stop the transition effect
+            function stopTransition(interval, finalRandom) {
+                clearInterval(interval); // Stop transition effect
+                randomNumber.val(finalRandom); // Display the final random number
 
-            $.ajax({
-                url: "/Game/updateWalletAmount?id=" + @Convert.ToInt32(Session["UserId"]) + "&amount=" + random,
-                type: "GET",
-                success: function (data) {
-                    if (data == 1) {
-                        randomNumber.value = random;
-                        setTimeout(function () { window.location.reload(); }, 1000);
-                    }
-                    else {
-                        alert("Sorry ! You earn 500 today . Now you can play game after 24 Hour");
-                    }
-                }
-            });
-        } else {
-                if (confirm("Are you sure you want to play again? pay 20 rupees and get one more chance ")) {
-                    randomNumber.value = random;
-
+                // AJAX call to update wallet amount
                 $.ajax({
-                    url: "/Game/updateWalletAmount?id=" + @Convert.ToInt32(Session["UserId"]) + "&amount=" + random,
+                    url: "/Game/updateWalletAmount?id=" + @Convert.ToInt32(Session["UserId"]) + "&amount=" + finalRandom,
                     type: "GET",
                     success: function (data) {
                         if (data == 1) {
-                            randomNumber.value = random;
+                            toastr.success("You earned, Play again!");
                             setTimeout(function () { window.location.reload(); }, 1000);
-                        }
-                        else {
-                            alert("Sorry your today Wallet amount is more than 500. So you can play game after 24 Hour");
+                        } else {
+                            toastr.error("Sorry ! Play after 24 hours");
+                            alert("Sorry! You earned 500 today. You can play the game again after 24 hours.");
                         }
                     }
                 });
             }
-        }
+
+            if (Number(@Session["chance"]) > 0) {
+                // Start transition effect
+                var interval = setInterval(function () {
+                    var random = Math.floor(Math.random() * 100) + 1; // Generate random number between 1 and 100
+                    randomNumber.val(random); // Display the generated random number
+                }, 100); // Interval for transition effect (adjust as needed)
+
+                // Stop the transition effect after 2 seconds
+                setTimeout(function () {
+                    var finalRandom = randomNumber.val(); // Get the final random number
+                    stopTransition(interval, finalRandom);
+                }, 2000);
+            } else {
+                    toastr.warning("20 rupees will be deducted from your account.")
+                if (confirm("Are you sure you want to play again? Pay 20 rupees and get one more chance.")) {
+                    // Start transition effect
+                    var interval = setInterval(function () {
+                        var random = Math.floor(Math.random() * 100) + 1; // Generate random number between 1 and 100
+                        randomNumber.val(random); // Display the generated random number
+                    }, 100); // Interval for transition effect (adjust as needed)
+
+                    // Stop the transition effect after 2 seconds
+                    setTimeout(function () {
+                        var finalRandom = randomNumber.val(); // Get the final random number
+                        stopTransition(interval, finalRandom);
+                    }, 2000);
+                }
+            }
         });
     });
 </script>
-
-                                @*url: "/Game/updateWalletAmount?id=" + @Convert.ToInt32(Session["UserId"]) + "&amount=" + random,*@

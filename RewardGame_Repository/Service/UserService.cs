@@ -160,6 +160,42 @@ namespace RewardGame_Repository.Service
 
                 throw ex;
             }
+        }        
+        public int PerDayDebitAmount(int id)
+        {
+            try
+            {
+                SqlParameter[] sqlParameters = new SqlParameter[]
+                {
+                    new SqlParameter("@userId" , id),
+
+                };
+                int balance = _DBContext.Database.SqlQuery<int>("exec SP_GetDebitAmountPerDay  @userId", sqlParameters).FirstOrDefault();
+                return balance;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public int TotalWins(int id)
+        {
+            try
+            {
+                SqlParameter[] sqlParameters = new SqlParameter[]
+                {
+                    new SqlParameter("@userId" , id),
+
+                };
+                int balance = _DBContext.Database.SqlQuery<int>("exec SP_GetTotalEarn  @userId", sqlParameters).FirstOrDefault();
+                return balance;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public int getAmountInOneDay(int id, int amount)

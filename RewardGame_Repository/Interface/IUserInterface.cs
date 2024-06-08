@@ -17,6 +17,9 @@ namespace RewardGame_Repository.Interface
         int GetBalanceLeft(int id);
         int GetLeftChances(int id);
         int PerDayProfit(int id);
+        int TotalWins(int id);
+        int PerDayDebitAmount(int id);
+
 
         int BuyNewChances(int id);
         int FreeChance(int id);

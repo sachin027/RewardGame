@@ -38,7 +38,9 @@ namespace Sachin_452.Controllers
                 if (validUser != null)
 
                 {
+                    SessionHelper.Username = validUser.Username;
                     SessionHelper.UserID = validUser.UserID;
+                    SessionHelper.Email = validUser.EmailId;
                     Session["UserId"]= validUser.UserID;
                     TempData["success"] = "Login Successfully";
                     return RedirectToAction("GameDashboard", "Game");
@@ -60,9 +62,6 @@ namespace Sachin_452.Controllers
         {
             return View();
         }
-
-
-
 
         [HttpPost]
         public async Task<ActionResult> Register(UserModel userModel)

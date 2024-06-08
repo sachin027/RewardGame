@@ -11,7 +11,7 @@ namespace RewardGame.CustomFilter
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            if (SessionHelper.SessionHelper.Email != null)
+            if (SessionHelper.SessionHelper.Email != "")
             {
                 return true;
             }
@@ -23,13 +23,11 @@ namespace RewardGame.CustomFilter
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             filterContext.Result = new RedirectToRouteResult(
-              new RouteValueDictionary(
-                  new
-                  {
-                      controller = "Login",
-                      action = "Login"
-                  })
-              );
+              new RouteValueDictionary
+               {
+                    { "controller", "Login" },
+                    { "action", "Login" }
+              });
         }
     }
 }
