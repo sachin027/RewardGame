@@ -32,7 +32,6 @@ namespace Sachin_452.Controllers
         {
             try
             {
-               
                 var validUser = _DBContext.UserTable.FirstOrDefault(x => x.EmailId == user.EmailId && x.Password == user.Password);
 
                 if (validUser != null)

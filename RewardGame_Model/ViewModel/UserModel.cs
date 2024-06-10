@@ -22,7 +22,7 @@ namespace RewardGame_Model.ViewModel
         public string EmailId { get; set; }
 
         [Required(ErrorMessage = "Please enter Password")]
-        //[RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage ="password must contain at least one numbers , one capital letter , one small letter and one special character.")]
+        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage ="password must contain at least one number , one Uppercase, one Lowercase and one special character.")]
         [MaxLength(30, ErrorMessage ="password maximum length should be 30 characters.")]
         [MinLength(8, ErrorMessage ="password minimum length should be 8 characters.")]
         public string Password { get; set; }
