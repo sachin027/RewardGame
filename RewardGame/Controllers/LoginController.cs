@@ -125,16 +125,7 @@ namespace Sachin_452.Controllers
             try
             {
                 HttpContext.Session.Clear();
-                //if (Request.Cookies["jwt"] != null)
-                //{
-                //    var cookie = new HttpCookie("jwt")
-                //    {
-                //        Expires = DateTime.UtcNow.AddMinutes(-1),
-                //        HttpOnly = true,
-                //        Secure = true // If your site is running on HTTPS
-                //    };
-                //    HttpContext.Response.Cookies.Add(cookie);
-                //}
+                DeleteAllCookies();
                 TempData["success"] = "Logout successfully.";
                 return RedirectToAction("Login", "Login");
             }
@@ -145,27 +136,17 @@ namespace Sachin_452.Controllers
             }
         }
 
-
-        private bool IsJwtValid()
+        private void DeleteAllCookies()
         {
-            var cookie = Request.Cookies["jwt"];
-            if (cookie == null) return false;
-
-            var token = cookie.Value;
-            if (string.IsNullOrEmpty(token)) return false;
-
-            var handler = new JwtSecurityTokenHandler();
-            try
+            foreach (var cookie in Request.Cookies.AllKeys)
             {
-                var jwtToken = handler.ReadToken(token) as JwtSecurityToken;
-                if (jwtToken == null) return false;
-
-                return jwtToken.ValidTo > DateTime.UtcNow;
-            }
-            catch
-            {
-                return false;
+                var expiredCookie = new HttpCookie(cookie)
+                {
+                    Expires = DateTime.UtcNow.AddDays(-1)
+                };
+                Response.Cookies.Add(expiredCookie);
             }
         }
+
     }
 }
