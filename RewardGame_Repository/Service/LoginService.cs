@@ -69,5 +69,25 @@ namespace RewardGame_Repository.Service
                 throw ex;
             }
         }
+
+        //public LoginModel LoginUser(LoginModel login)
+        //{
+        //    try
+        //    {
+        //        UserTable _User = _DBContext.UserTable.FirstOrDefault(x => x.EmailId == login.EmailId && x.Password == login.Password);
+        //        if(_User != null)
+        //        {
+        //            //LoginModel userModel = LoginHelper.ConvertUserToUserModel(_User);
+
+        //            //return userModel;
+        //        }
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
     }
 }

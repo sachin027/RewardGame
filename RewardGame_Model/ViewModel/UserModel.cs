@@ -30,5 +30,7 @@ namespace RewardGame_Model.ViewModel
         [Required(ErrorMessage = "Please enter Confirm Password")]
         [Compare("Password", ErrorMessage = "Password is not identical")]
         public string ConfirmPassword { get; set; }
+
+        public string Token { get; set; }
     }
 }

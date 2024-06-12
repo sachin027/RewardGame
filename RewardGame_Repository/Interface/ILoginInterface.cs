@@ -10,6 +10,7 @@ namespace RewardGame_Repository.Interface
 {
     public interface ILoginInterface
     {
+        //LoginModel LoginUser(LoginModel login);
         UserTable UserRegistration(UserModel _userModel);
     }
 }

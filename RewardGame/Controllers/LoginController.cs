@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RewardGame.APIs.JWTAuthentication;
 using RewardGame.CustomFilter;
 using RewardGame.SessionHelper;
 using RewardGame.WebHelper;
@@ -12,8 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
-
+using System.Timers;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Sachin_452.Controllers
 {
@@ -27,26 +28,46 @@ namespace Sachin_452.Controllers
         {
             return View();
         }
+
         [HttpPost]
-        public ActionResult Login(UserModel user)
+        public async Task<ActionResult> Login(LoginModel login)
         {
             try
             {
-                var validUser = _DBContext.UserTable.FirstOrDefault(x => x.EmailId == user.EmailId && x.Password == user.Password);
-
-                if (validUser != null)
-
+                if (ModelState.IsValid)
                 {
-                    SessionHelper.Username = validUser.Username;
-                    SessionHelper.UserID = validUser.UserID;
-                    SessionHelper.Email = validUser.EmailId;
-                    Session["UserId"]= validUser.UserID;
-                    TempData["success"] = "Login Successfully";
-                    return RedirectToAction("GameDashboard", "Game");
+                    string content = JsonConvert.SerializeObject(login);
+
+                    string response = await WebHelpers.HttpRequestResponce("api/LoginAPI/LoginUser", content);
+
+                    LoginModel CheckAddUser = JsonConvert.DeserializeObject<LoginModel>(response);
+                    var usr = _DBContext.UserTable.Where(u => u.EmailId == login.EmailId && u.Password == login.Password).FirstOrDefault();
+                    if (CheckAddUser != null)
+                    {
+                        var cookie = new HttpCookie("jwt", CheckAddUser.Token)
+                        {
+                            HttpOnly = true,
+                            Secure = true, // Assuming your application is running over HTTPS
+                            Expires = DateTime.UtcNow.AddMinutes(1)
+                        };
+
+                        HttpContext.Response.Cookies.Add(cookie);
+                        SessionHelper.Username = usr.Username;
+                        SessionHelper.UserID = usr.UserID;
+                        SessionHelper.Email = usr.EmailId;
+                        Session["UserId"] = usr.UserID;
+                        TempData["success"] = "Login Successfully";
+
+                        return RedirectToAction("GameDashboard", "Game");
+                    }
+                    else
+                    {
+                        TempData["error"] = "Something went wrong!";
+                        return View();
+                    }
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!";
                     return View();
                 }
             }
@@ -104,6 +125,16 @@ namespace Sachin_452.Controllers
             try
             {
                 HttpContext.Session.Clear();
+                //if (Request.Cookies["jwt"] != null)
+                //{
+                //    var cookie = new HttpCookie("jwt")
+                //    {
+                //        Expires = DateTime.UtcNow.AddMinutes(-1),
+                //        HttpOnly = true,
+                //        Secure = true // If your site is running on HTTPS
+                //    };
+                //    HttpContext.Response.Cookies.Add(cookie);
+                //}
                 TempData["success"] = "Logout successfully.";
                 return RedirectToAction("Login", "Login");
             }
@@ -111,6 +142,29 @@ namespace Sachin_452.Controllers
             {
 
                 throw ex;
+            }
+        }
+
+
+        private bool IsJwtValid()
+        {
+            var cookie = Request.Cookies["jwt"];
+            if (cookie == null) return false;
+
+            var token = cookie.Value;
+            if (string.IsNullOrEmpty(token)) return false;
+
+            var handler = new JwtSecurityTokenHandler();
+            try
+            {
+                var jwtToken = handler.ReadToken(token) as JwtSecurityToken;
+                if (jwtToken == null) return false;
+
+                return jwtToken.ValidTo > DateTime.UtcNow;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

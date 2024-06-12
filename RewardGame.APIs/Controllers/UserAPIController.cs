@@ -1,4 +1,5 @@
-﻿using RewardGame_Model.DBContext;
+﻿using RewardGame.APIs.JWTAuthentication;
+using RewardGame_Model.DBContext;
 using RewardGame_Model.ViewModel;
 using RewardGame_Repository.Interface;
 using RewardGame_Repository.Service;
@@ -17,11 +18,13 @@ namespace RewardGame.APIs.Controllers
     {
         IUserInterface userInterface = new UserService();
         // GET: UserAPI
+        [JwtAuthentication]
         [Route("api/UserAPI/GetWalletHistory")]
         public List<TransactionsHistory> GetWalletHistory(int userId )
         {
             try
             {
+                JwtAuthenticationAttribute.OnAuthorization(HttpContext.Current);
                 List<TransactionsHistory> wallets = userInterface.GetWalletHistory(userId);
                 return wallets;
             }
@@ -32,6 +35,7 @@ namespace RewardGame.APIs.Controllers
             }
         }
 
+        [JwtAuthentication]
         [Route("api/UserAPI/AddNumberIntoWallet")]
         [HttpPost]
         public void AddNumberIntoWallet(int randomNumber , int id)

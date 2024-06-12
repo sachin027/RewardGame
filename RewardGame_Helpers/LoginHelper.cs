@@ -28,6 +28,27 @@ namespace RewardGame_Helpers
             {
                 throw ex;
             }
+        }        
+        
+        public static UserModel ConvertUserToUserModel(UserTable _user)
+        {
+            try
+            {
+                if (_user != null)
+                {
+                UserModel _userModel = new UserModel();
+                    _userModel.UserID = _user.UserID;
+                    _userModel.Username = _user.Username;
+                    _userModel.EmailId = _user.EmailId;
+                    _userModel.Password = _user.Password;
+                return _userModel;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -26,27 +26,35 @@ namespace RewardGame.Controllers
         {
             try
             {
-                ViewBag.Username = SessionHelper.SessionHelper.Username;
-
-                string url1 = "api/WalletAPI/TotalWins?userId=" + SessionHelper.SessionHelper.UserID;
-                string url2 = "api/WalletAPI/GetBalanceLeft?userId=" + SessionHelper.SessionHelper.UserID;
-                string url3 = "api/WalletAPI/GetLeftChances?userId=" + SessionHelper.SessionHelper.UserID;
-                string url4 = "api/WalletAPI/PerDayProfit?userId=" + SessionHelper.SessionHelper.UserID;
-
-
-                string response1 = await WebHelper.WebHelpers.HttpRequestResponce(url1);
-                string response2 = await WebHelper.WebHelpers.HttpRequestResponce(url2);
-                string response3 = await WebHelper.WebHelpers.HttpRequestResponce(url3);
-                string response4 = await WebHelper.WebHelpers.HttpRequestResponce(url4);
+                if(Request.Cookies["jwt"] != null)
+                {
+                        var CokkieValue = Request.Cookies["jwt"].Value;
+                        ViewBag.Username = SessionHelper.SessionHelper.Username;
+                        string url1 = "api/WalletAPI/TotalWins?userId=" + SessionHelper.SessionHelper.UserID;
+                        string url2 = "api/WalletAPI/GetBalanceLeft?userId=" + SessionHelper.SessionHelper.UserID;
+                        string url3 = "api/WalletAPI/GetLeftChances?userId=" + SessionHelper.SessionHelper.UserID;
+                        string url4 = "api/WalletAPI/PerDayProfit?userId=" + SessionHelper.SessionHelper.UserID;
 
 
-                ViewBag.totalWin = JsonConvert.DeserializeObject<int>(response1);
-                ViewBag.balance = JsonConvert.DeserializeObject<int>(response2);
-                ViewBag.chance = JsonConvert.DeserializeObject<int>(response3);
-                ViewBag.profit = JsonConvert.DeserializeObject<int>(response4);
+                        string response1 = await WebHelper.WebHelpers.HttpRequestResponceCookie(url1 , CokkieValue);
+                        string response2 = await WebHelper.WebHelpers.HttpRequestResponceCookie(url2 , CokkieValue);
+                        string response3 = await WebHelper.WebHelpers.HttpRequestResponceCookie(url3 , CokkieValue);
+                        string response4 = await WebHelper.WebHelpers.HttpRequestResponceCookie(url4 , CokkieValue);
 
 
-                return View();
+                        ViewBag.totalWin = JsonConvert.DeserializeObject<int>(response1);
+                        ViewBag.balance = JsonConvert.DeserializeObject<int>(response2);
+                        ViewBag.chance = JsonConvert.DeserializeObject<int>(response3);
+                        ViewBag.profit = JsonConvert.DeserializeObject<int>(response4);
+
+
+                        return View();
+                }
+                else
+                {
+                    Session.Abandon();
+                    return View("Error");
+                }
             }
             catch (Exception ex)
             {
@@ -73,13 +81,14 @@ namespace RewardGame.Controllers
         {
             try
             {
+                var CokkieValue = Request.Cookies["jwt"].Value;
                 int id = SessionHelper.SessionHelper.UserID;
                 ViewBag.Username = SessionHelper.SessionHelper.Username;
                 string url = "api/UserAPI/GetWalletHistory?userId=" + SessionHelper.SessionHelper.UserID;
                 string url5 = "api/WalletAPI/PerDayDebitAmount?userId=" + SessionHelper.SessionHelper.UserID;
 
-                string response = await WebHelper.WebHelpers.HttpRequestResponce(url);
-                string response5 = await WebHelper.WebHelpers.HttpRequestResponce(url5);
+                string response = await WebHelper.WebHelpers.HttpRequestResponceCookie(url, CokkieValue);
+                string response5 = await WebHelper.WebHelpers.HttpRequestResponceCookie(url5, CokkieValue);
 
                 List<TransactionsHistory> TransactionList = JsonConvert.DeserializeObject<List<TransactionsHistory>>(response) ;
                 ViewBag.deductAmount = JsonConvert.DeserializeObject<int>(response5);
